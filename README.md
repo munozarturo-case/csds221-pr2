@@ -3,7 +3,7 @@
 Framework: Next.js
 Materials Library: MUI
 
-- [USE#104] SIMPLE TABLE         (1)
+- [USE#104] SIMPLE TABLE         (1) ✓
   - start page has an empty table with headers task, description, deadline, priority, is complete, and action as shown on the preview
 - [USE#105] UPDATE BUTTON BINDING (5)
   - if the user checks the 'is complete' checkbox the update button disappears from the tuple
