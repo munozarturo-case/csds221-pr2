@@ -1,6 +1,7 @@
 # Task Manager Application
 
 Framework: Next.js
+Materials Library: MUI
 
 - [USE#104] SIMPLE TABLE         (1)
   - start page has an empty table with headers task, description, deadline, priority, is complete, and action as shown on the preview
@@ -40,5 +41,5 @@ Framework: Next.js
   - page has an upper banner with a title labeled 'FRAMEWORKS' and on the right side of the banner there is an add button with an add icon to the left side of the label as shown on the preview in the instruction sheet
 - [USE#122] ADD DIALOG           (10)
   - when user clicks the add button a dialog prompts with a header that contains a title 'add task' a body that contains a title textbox a description textbox a deadline date picker a priority radio button and a footer that contains an 'add' and 'cancel' button with icons in front of each of those buttons
-- [USE#124] TOOLS                (5)
+- [USE#124] TOOLS                (5) ✓
   - application uses an SPA framework like React, Vue, Angular and a materials library like MUI, Vuetify, Bootstrap 5
