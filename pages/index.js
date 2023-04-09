@@ -131,6 +131,7 @@ export default function Home() {
       <TaskDialog
         show={showDialog}
         title={dialogMode === 'add' ? 'Add Task' : 'Edit Task'}
+        dialogIcon={dialogMode === 'add' ? <FaPlus /> : <FaEdit />}
         body={dialogMode === 'add' ?
           <AddTaskBody
             task={task}
