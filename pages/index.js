@@ -1,8 +1,10 @@
 import React from 'react';
 import { Form, Navbar, Container, Nav, Button, Table } from 'react-bootstrap';
-import { FaBars, FaPlus } from 'react-icons/fa';
+import { FaBars, FaPlus, FaEdit, FaTrash } from 'react-icons/fa';
 import TaskDialog from '@/components/TaskDialog';
 import AddTaskBody from '@/components/AddTaskBody';
+import EditTaskBody from '@/components/EditTaskBody';
+import moment from 'moment/moment';
 
 import 'toastr/build/toastr.min.css';
 import toastr from 'toastr';
@@ -15,10 +17,48 @@ export default function Home() {
   const [showDialog, setShowDialog] = React.useState(false);
   const [dialogMode, setDialogMode] = React.useState('');
 
-  const [tasks, setTasks] = React.useState([]);
+  const testTasks = [
+    {
+      title: "Finish project proposal",
+      description: "Write up the proposal and send it to the project manager",
+      deadline: "2023-05-01",
+      priority: "high",
+      isComplete: false
+    },
+    {
+      title: "Buy groceries",
+      description: "Go to the supermarket and buy milk, eggs, bread, and cheese",
+      deadline: "2023-04-15",
+      priority: "med",
+      isComplete: false
+    },
+    {
+      title: "Call doctor's office",
+      description: "Make an appointment for next week",
+      deadline: "2023-04-12",
+      priority: "low",
+      isComplete: false
+    },
+    {
+      title: "Pay rent",
+      description: "Transfer rent money to landlord's bank account",
+      deadline: "2023-04-30",
+      priority: "high",
+      isComplete: false
+    },
+    {
+      title: "Finish book",
+      description: "Read the remaining chapters and write a review",
+      deadline: "2023-05-15",
+      priority: "med",
+      isComplete: false
+    }
+  ];
+
+  const [tasks, setTasks] = React.useState([...testTasks]);
   const [task, setTask] = React.useState({ title: null, description: null, deadline: null, priority: null, isComplete: false });
 
-  const [showInvalid, setShowInvalid] = React.useState(false);
+  const [editIndex, setEditIndex] = React.useState(null);
 
   const handleConfirm = () => {
     if (dialogMode === 'add') {
@@ -29,17 +69,21 @@ export default function Home() {
   }
 
   const handleAddTask = () => {
-    if (task.title && !existingTitles.includes(task.title) && task.description && task.deadline && task.priority) {
-      setTasks([...tasks, task]);
-      setTask({ title: null, description: null, deadline: null, priority: null, isComplete: false });
-      setShowDialog(false);
-      toastr.success('Task added successfully');
-    } else {
-      setShowInvalid(true);
-    }
+    // if (task.title && !existingTitles.includes(task.title) && task.description && task.deadline && task.priority) {
+    setTasks([...tasks, task]);
+    setTask({ title: null, description: null, deadline: null, priority: null, isComplete: false });
+    setShowDialog(false);
+    toastr.success('Task added successfully');
+    // }
   };
 
   const handleUpdateTask = () => {
+    const newTasks = [...tasks];
+    newTasks[editIndex] = task;
+    setTasks(newTasks);
+    setTask({ title: null, description: null, deadline: null, priority: null, isComplete: false });
+
+    toastr.success('Task updated successfully');
 
     setShowDialog(false);
   };
@@ -48,18 +92,20 @@ export default function Home() {
     setShowDialog(false);
   };
 
-  const handleUpdateClick = () => {
+  const handleUpdateClick = (index) => {
+    setTask(tasks[index]);
+    setEditIndex(index);
     setDialogMode('edit');
     setShowDialog(true);
   };
 
-  const EditTaskBody = () => {
-    return (
-      <>
-        <p>Edit Task Body</p>
-      </>
-    );
-  }
+  const handleDeleteClick = (index) => {
+    const newTasks = [...tasks];
+    newTasks.splice(index, 1);
+    setTasks(newTasks);
+
+    toastr.success('Task deleted successfully');
+  };
 
   return (
     <>
@@ -90,10 +136,11 @@ export default function Home() {
             task={task}
             setTask={setTask}
             existingTitles={tasks.map((e) => e.title)}
-            showInvalid={showInvalid} 
-            
           /> :
-          <EditTaskBody />}
+          <EditTaskBody
+            task={task}
+            setTask={setTask}
+          />}
         onConfirm={handleConfirm}
         onCancel={handleCancel} />
       <Container className="my-3">
@@ -109,7 +156,31 @@ export default function Home() {
             </tr>
           </thead>
           <tbody>
-            {/* Add your task items here */}
+            {tasks.map((task, index) => (
+              <tr key={index}>
+                <td>{task.title}</td>
+                <td>{task.description}</td>
+                <td>{moment(task.deadline).format("MM/DD/YYYY")}</td>
+                <td>{task.priority.toUpperCase()}</td>
+                <td>{task.isComplete ? 'Yes' : 'No'}</td>
+                <td>
+                  <div className="btn-group-vertical">
+                    <Button variant="primary" onClick={() => handleUpdateClick(index)}>
+                      <FaEdit />
+                      {' '}
+                      Edit
+                    </Button>
+
+                    <Button variant="danger" onClick={() => handleDeleteClick(index)}>
+                      <FaTrash />
+                      {' '}
+                      Delete
+                    </Button>
+                  </div>
+                </td>
+
+              </tr>
+            ))}
           </tbody>
         </Table>
       </Container>
