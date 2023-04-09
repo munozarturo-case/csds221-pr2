@@ -161,15 +161,28 @@ export default function Home() {
                 <td>{task.title}</td>
                 <td>{task.description}</td>
                 <td>{moment(task.deadline).format("MM/DD/YYYY")}</td>
-                <td>{task.priority.toUpperCase()}</td>
-                <td>{task.isComplete ? 'Yes' : 'No'}</td>
-                <td>
+                <td className="text-center">{task.priority.toUpperCase()}</td>
+                <td className="text-center">
+                  <Form.Check
+                    type="checkbox"
+                    checked={task.isComplete}
+                    onChange={(e) => {
+                      const isChecked = e.target.checked;
+                      setTasks(prevTasks => {
+                        const newTasks = [...prevTasks];
+                        newTasks[index].isComplete = isChecked;
+                        return newTasks;
+                      });
+                    }}
+                  />
+                </td>
+                <td className="text-center">
                   <div className="btn-group-vertical">
-                    <Button variant="primary" onClick={() => handleUpdateClick(index)}>
+                    {!task.isComplete && <Button variant="primary" onClick={() => handleUpdateClick(index)}>
                       <FaEdit />
                       {' '}
                       Edit
-                    </Button>
+                    </Button>}
 
                     <Button variant="danger" onClick={() => handleDeleteClick(index)}>
                       <FaTrash />
