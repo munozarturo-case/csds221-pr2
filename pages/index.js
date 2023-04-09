@@ -2,6 +2,7 @@ import React from 'react';
 import { Navbar, Container, Nav, Button, Table } from 'react-bootstrap';
 import { FaBars, FaPlus } from 'react-icons/fa';
 
+
 export default function Home() {
   return (
     <>

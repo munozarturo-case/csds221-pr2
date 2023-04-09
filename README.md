@@ -37,7 +37,7 @@ Materials Library: MUI
   - all toaster notifications will be on the lower right side of the app to avoid covering the buttons on top
 - [USE#120] DISTINCT VALIDATION  (5)
   - the title textbox must also be unique from the existing titles added to the table and if the title is not unique then the textbox will turn red and display a small error message underneath the textbox
-- [USE#121] BANNER BAR           (1)
+- [USE#121] BANNER BAR           (1) ✓
   - page has an upper banner with a title labeled 'FRAMEWORKS' and on the right side of the banner there is an add button with an add icon to the left side of the label as shown on the preview in the instruction sheet
 - [USE#122] ADD DIALOG           (10)
   - when user clicks the add button a dialog prompts with a header that contains a title 'add task' a body that contains a title textbox a description textbox a deadline date picker a priority radio button and a footer that contains an 'add' and 'cancel' button with icons in front of each of those buttons
