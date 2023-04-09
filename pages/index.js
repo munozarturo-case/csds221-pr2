@@ -73,25 +73,32 @@ export default function Home() {
   }
 
   const handleAddTask = () => {
-    // if (task.title && !existingTitles.includes(task.title) && task.description && task.deadline && task.priority) {
-    setTasks([...tasks, task]);
-    setTask({ title: null, description: null, deadline: null, priority: null, isComplete: false });
+    if (task.title && !existingTitles.includes(task.title) && task.description && task.deadline && task.priority) {
+      setTasks([...tasks, task]);
+      setTask({ title: null, description: null, deadline: null, priority: null, isComplete: false });
 
-    toastr.success('Task added successfully');
+      toastr.success('Task added successfully');
 
-    setShowDialog(false);
+      setShowDialog(false);
+    } else {
+      toastr.error('Error adding task');
+    }
   };
 
   const handleUpdateTask = () => {
-    const newTasks = [...tasks];
-    newTasks[editIndex] = task;
-    
-    setTasks(newTasks);
-    setTask({ title: null, description: null, deadline: null, priority: null, isComplete: false });
+    if (task.description && task.deadline && task.priority) {
+      const newTasks = [...tasks];
+      newTasks[editIndex] = task;
 
-    toastr.success('Task updated successfully');
+      setTasks(newTasks);
+      setTask({ title: null, description: null, deadline: null, priority: null, isComplete: false });
 
-    setShowDialog(false);
+      toastr.success('Task updated successfully');
+
+      setShowDialog(false);
+    } else {
+      toastr.error('Error updating task');
+    }
   };
 
   const handleCancel = () => {
@@ -199,7 +206,6 @@ export default function Home() {
                     </Button>
                   </div>
                 </td>
-
               </tr>
             ))}
           </tbody>

@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Form } from 'react-bootstrap';
 
-export default function AddTaskBody({ task, setTask, existingTitles }) {
+export default function AddTaskBody({ task, setTask, existingTitles}) {
     const [titleError, setTitleError] = React.useState('');
     const [descriptionError, setDescriptionError] = React.useState('');
     const [deadlineError, setDeadlineError] = React.useState('');

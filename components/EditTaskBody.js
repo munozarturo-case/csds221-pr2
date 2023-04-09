@@ -81,7 +81,6 @@ export default function EditTaskBody({ task, setTask }) {
                     </Form.Control.Feedback>
                 </Form.Group>
             </Form>
-
         </>
     );
 }  
