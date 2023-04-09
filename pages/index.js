@@ -13,10 +13,6 @@ toastr.options = {
   positionClass: 'toast-bottom-right',
 };
 
-/*
-Task is not being cleared properly, make sure it is cleared after every dialog interaction
-*/
-
 export default function Home() {
   const [showDialog, setShowDialog] = React.useState(false);
   const [dialogMode, setDialogMode] = React.useState('');
@@ -76,14 +72,16 @@ export default function Home() {
     // if (task.title && !existingTitles.includes(task.title) && task.description && task.deadline && task.priority) {
     setTasks([...tasks, task]);
     setTask({ title: null, description: null, deadline: null, priority: null, isComplete: false });
-    setShowDialog(false);
+
     toastr.success('Task added successfully');
-    // }
+
+    setShowDialog(false);
   };
 
   const handleUpdateTask = () => {
     const newTasks = [...tasks];
     newTasks[editIndex] = task;
+    
     setTasks(newTasks);
     setTask({ title: null, description: null, deadline: null, priority: null, isComplete: false });
 
@@ -93,6 +91,7 @@ export default function Home() {
   };
 
   const handleCancel = () => {
+    setTask({ title: null, description: null, deadline: null, priority: null, isComplete: false });
     setShowDialog(false);
   };
 

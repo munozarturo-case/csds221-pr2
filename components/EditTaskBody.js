@@ -51,7 +51,6 @@ export default function EditTaskBody({ task, setTask }) {
         }
     };
 
-
     return (
         <>
             <Form>
