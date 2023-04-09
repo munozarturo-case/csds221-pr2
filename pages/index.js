@@ -4,12 +4,22 @@ import { FaBars, FaPlus } from 'react-icons/fa';
 import TaskDialog from '@/components/TaskDialog';
 import AddTaskBody from '@/components/AddTaskBody';
 
+import 'toastr/build/toastr.min.css';
+import toastr from 'toastr';
+
+toastr.options = {
+  positionClass: 'toast-bottom-right',
+};
+
 export default function Home() {
   const [showDialog, setShowDialog] = React.useState(false);
   const [dialogMode, setDialogMode] = React.useState('');
 
   const [tasks, setTasks] = React.useState([]);
   const [task, setTask] = React.useState({ title: null, description: null, deadline: null, priority: null, isComplete: false });
+
+  const [actionIsValid, setActionIsValid] = React.useState(false);
+  const [triedConfirm, setTriedConfirm] = React.useState(false);
 
   React.useEffect(() => {
     console.log(tasks);
@@ -21,12 +31,17 @@ export default function Home() {
     } else if (dialogMode === 'edit') {
       handleUpdateTask();
     }
+
+    setTriedConfirm(true);
   }
 
   const handleAddTask = () => {
-    setTasks([...tasks, task]);
-    setTask({ title: null, description: null, deadline: null, priority: null, isComplete: false });
-    setShowDialog(false);
+    if (actionIsValid) {
+      setTasks([...tasks, task]);
+      setTask({ title: null, description: null, deadline: null, priority: null, isComplete: false });
+      setShowDialog(false);
+      toastr.success('Task added successfully');
+    }
   };
 
   const handleUpdateTask = () => {
@@ -35,14 +50,9 @@ export default function Home() {
   };
 
   const handleCancel = () => {
-
+    setActionIsValid(false);
 
     setShowDialog(false);
-  };
-
-  const handleAddClick = () => {
-    setDialogMode('add');
-    setShowDialog(true);
   };
 
   const handleUpdateClick = () => {
@@ -71,7 +81,10 @@ export default function Home() {
           </Navbar.Brand>
         </Container>
         <Nav className="ml-auto mr-2">
-          <Button variant="primary" style={{ "margin-right": "10px" }} onClick={handleAddClick}>
+          <Button variant="primary" style={{ "margin-right": "10px" }} onClick={() => {
+            setDialogMode('add');
+            setShowDialog(true);
+          }}>
             <FaPlus className="align-middle" /> Add
           </Button>
         </Nav>
@@ -79,7 +92,13 @@ export default function Home() {
       <TaskDialog
         show={showDialog}
         title={dialogMode === 'add' ? 'Add Task' : 'Edit Task'}
-        body={dialogMode === 'add' ? <AddTaskBody task={task} setTask={setTask} /> : <EditTaskBody />}
+        body={dialogMode === 'add' ?
+          <AddTaskBody
+            task={task}
+            setTask={setTask}
+            existingTitles={tasks.map((e) => e.title)}
+            setActionIsValid={setActionIsValid} /> :
+          <EditTaskBody />}
         onConfirm={handleConfirm}
         onCancel={handleCancel} />
       <Container className="my-3">
