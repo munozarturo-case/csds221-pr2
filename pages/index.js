@@ -18,12 +18,7 @@ export default function Home() {
   const [tasks, setTasks] = React.useState([]);
   const [task, setTask] = React.useState({ title: null, description: null, deadline: null, priority: null, isComplete: false });
 
-  const [actionIsValid, setActionIsValid] = React.useState(false);
-  const [triedConfirm, setTriedConfirm] = React.useState(false);
-
-  React.useEffect(() => {
-    console.log(tasks);
-  }, [tasks]);
+  const [showInvalid, setShowInvalid] = React.useState(false);
 
   const handleConfirm = () => {
     if (dialogMode === 'add') {
@@ -31,16 +26,16 @@ export default function Home() {
     } else if (dialogMode === 'edit') {
       handleUpdateTask();
     }
-
-    setTriedConfirm(true);
   }
 
   const handleAddTask = () => {
-    if (actionIsValid) {
+    if (task.title && !existingTitles.includes(task.title) && task.description && task.deadline && task.priority) {
       setTasks([...tasks, task]);
       setTask({ title: null, description: null, deadline: null, priority: null, isComplete: false });
       setShowDialog(false);
       toastr.success('Task added successfully');
+    } else {
+      setShowInvalid(true);
     }
   };
 
@@ -50,8 +45,6 @@ export default function Home() {
   };
 
   const handleCancel = () => {
-    setActionIsValid(false);
-
     setShowDialog(false);
   };
 
@@ -97,7 +90,9 @@ export default function Home() {
             task={task}
             setTask={setTask}
             existingTitles={tasks.map((e) => e.title)}
-            setActionIsValid={setActionIsValid} /> :
+            showInvalid={showInvalid} 
+            
+          /> :
           <EditTaskBody />}
         onConfirm={handleConfirm}
         onCancel={handleCancel} />

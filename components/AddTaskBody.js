@@ -1,30 +1,74 @@
 import React from 'react';
 import { Form } from 'react-bootstrap';
 
-export default function AddTaskBody({ task, setTask, existingTitles, setActionIsValid }) {
+export default function AddTaskBody({ task, setTask, existingTitles, showInvalid }) {
     const [titleError, setTitleError] = React.useState('');
     const [descriptionError, setDescriptionError] = React.useState('');
     const [deadlineError, setDeadlineError] = React.useState('');
     const [priorityError, setPriorityError] = React.useState('');
 
+    const handleValidityCheck = () => {
+        if (!task.title) {
+            setTitleError('Title is required');
+        } else if (existingTitles.includes(task.title)) {
+            setTitleError('Title already exists');
+        } else {
+            setTitleError('');
+        }
+
+        if (!task.description) {
+            setDescriptionError('Description is required');
+        } else {
+            setDescriptionError('');
+        }
+
+        if (!task.deadline) {
+            setDeadlineError('Deadline is required');
+        } else {
+            setDeadlineError('');
+        }
+
+        if (!task.priority) {
+            setPriorityError('Priority is required');
+        } else {
+            setPriorityError('');
+        }
+    };
+
     const handleTitleChange = (e) => {
-        const title = e.target.value.trim();
+        const title = e.target.value;
 
         setTask((prevState) => ({
             ...prevState,
             title: title
         }));
 
-        checkActionValid();
+        if (showInvalid) {
+            handleValidityCheck();
+        } else if (!title) {
+            setTitleError('Title is required');
+        } else if (existingTitles.includes(title)) {
+            setTitleError('Title already exists');
+        } else {
+            setTitleError('');
+        }
     };
 
     const handleDescriptionChange = (e) => {
-        const description = e.target.value.trim();
+        const description = e.target.value;
 
         setTask((prevState) => ({
             ...prevState,
             description: description
         }));
+
+        if (showInvalid) {
+            handleValidityCheck();
+        } else if (!description) {
+            setDescriptionError('Description is required');
+        } else {
+            setDescriptionError('');
+        }
     };
 
     const handleDeadlineChange = (e) => {
@@ -34,6 +78,14 @@ export default function AddTaskBody({ task, setTask, existingTitles, setActionIs
             ...prevState,
             deadline: deadline
         }));
+
+        if (showInvalid) {
+            handleValidityCheck();
+        } else if (!deadline) {
+            setDeadlineError('Deadline is required');
+        } else {
+            setDeadlineError('');
+        }
     };
 
     const handlePriorityChange = (e) => {
@@ -43,7 +95,21 @@ export default function AddTaskBody({ task, setTask, existingTitles, setActionIs
             ...prevState,
             priority: priority
         }));
+
+        if (showInvalid) {
+            handleValidityCheck();
+        } else if (!priority) {
+            setPriorityError('Priority is required');
+        } else {
+            setPriorityError('');
+        }
     };
+
+    React.useEffect(() => {
+        if (showInvalid) {
+            handleValidityCheck();
+        }
+    }, [showInvalid]);
 
     return (
         <Form>
@@ -51,21 +117,21 @@ export default function AddTaskBody({ task, setTask, existingTitles, setActionIs
                 <Form.Label>Title</Form.Label>
                 <Form.Control type="text" placeholder="Enter title" value={task.title} onChange={handleTitleChange} isInvalid={!!titleError} />
                 <Form.Control.Feedback type="invalid">
-                    {titleError}
+                    {titleError || (showInvalid && !task.title.length && 'Title is required') || (showInvalid && existingTitles.includes(task.title) && 'Title already exists')}
                 </Form.Control.Feedback>
             </Form.Group>
             <Form.Group controlId="formDescription">
                 <Form.Label>Description</Form.Label>
                 <Form.Control type="text" placeholder="Enter description" value={task.description} onChange={handleDescriptionChange} isInvalid={!!descriptionError} />
                 <Form.Control.Feedback type="invalid">
-                    {descriptionError}
+                    {descriptionError || (showInvalid && !task.description && 'Description is required')}
                 </Form.Control.Feedback>
             </Form.Group>
             <Form.Group controlId="formDeadline">
                 <Form.Label>Deadline</Form.Label>
                 <Form.Control type="date" value={task.deadline} onChange={handleDeadlineChange} isInvalid={!!deadlineError} />
                 <Form.Control.Feedback type="invalid">
-                    {deadlineError}
+                    {deadlineError || (showInvalid && !task.deadline && 'Deadline is required')}
                 </Form.Control.Feedback>
             </Form.Group>
             <Form.Group controlId="formPriority">
@@ -76,7 +142,7 @@ export default function AddTaskBody({ task, setTask, existingTitles, setActionIs
                     <Form.Check inline type="radio" label="Low" name="priority" value="low" checked={task.priority === 'low'} onChange={handlePriorityChange} isInvalid={!!priorityError} />
                 </div>
                 <Form.Control.Feedback type="invalid">
-                    {priorityError}
+                    {priorityError || (showInvalid && !task.priority && 'Priority is required')}
                 </Form.Control.Feedback>
             </Form.Group>
         </Form>
