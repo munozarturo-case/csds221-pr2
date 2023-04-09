@@ -13,6 +13,10 @@ toastr.options = {
   positionClass: 'toast-bottom-right',
 };
 
+/*
+Task is not being cleared properly, make sure it is cleared after every dialog interaction
+*/
+
 export default function Home() {
   const [showDialog, setShowDialog] = React.useState(false);
   const [dialogMode, setDialogMode] = React.useState('');
@@ -182,7 +186,7 @@ export default function Home() {
                     {!task.isComplete && <Button variant="primary" onClick={() => handleUpdateClick(index)}>
                       <FaEdit />
                       {' '}
-                      Edit
+                      Update
                     </Button>}
 
                     <Button variant="danger" onClick={() => handleDeleteClick(index)}>
