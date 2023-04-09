@@ -11,6 +11,10 @@ export default function Home() {
   const [tasks, setTasks] = React.useState([]);
   const [task, setTask] = React.useState({ title: null, description: null, deadline: null, priority: null, isComplete: false });
 
+  React.useEffect(() => {
+    console.log(tasks);
+  }, [tasks]);
+
   const handleConfirm = () => {
     if (dialogMode === 'add') {
       handleAddTask();
@@ -21,13 +25,7 @@ export default function Home() {
 
   const handleAddTask = () => {
     setTasks([...tasks, task]);
-
-    task.title = null;
-    task.description = null;
-    task.deadline = null;
-    task.priority = null;
-    task.isComplete = false;
-
+    setTask({ title: null, description: null, deadline: null, priority: null, isComplete: false });
     setShowDialog(false);
   };
 
@@ -81,7 +79,7 @@ export default function Home() {
       <TaskDialog
         show={showDialog}
         title={dialogMode === 'add' ? 'Add Task' : 'Edit Task'}
-        body={dialogMode === 'add' ? <AddTaskBody task={task} setTask={setTask}/> : <EditTaskBody />}
+        body={dialogMode === 'add' ? <AddTaskBody task={task} setTask={setTask} /> : <EditTaskBody />}
         onConfirm={handleConfirm}
         onCancel={handleCancel} />
       <Container className="my-3">
