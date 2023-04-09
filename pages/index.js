@@ -1,9 +1,13 @@
 import React from 'react';
+
 import { Form, Navbar, Container, Nav, Button, Table } from 'react-bootstrap';
+
 import { FaBars, FaPlus, FaEdit, FaTrash } from 'react-icons/fa';
+
 import TaskDialog from '@/components/TaskDialog';
 import AddTaskBody from '@/components/AddTaskBody';
 import EditTaskBody from '@/components/EditTaskBody';
+
 import moment from 'moment/moment';
 
 import 'toastr/build/toastr.min.css';
