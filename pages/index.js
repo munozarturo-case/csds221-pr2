@@ -1,39 +1,64 @@
 import React from 'react';
-import { Navbar, Container, Nav, Button, Table } from 'react-bootstrap';
+import { Form, Navbar, Container, Nav, Button, Table } from 'react-bootstrap';
 import { FaBars, FaPlus } from 'react-icons/fa';
 import TaskDialog from '@/components/TaskDialog';
+import AddTaskBody from '@/components/AddTaskBody';
 
 export default function Home() {
   const [showDialog, setShowDialog] = React.useState(false);
-  // const [tasks, setTasks] = React.useState([]);
+  const [dialogMode, setDialogMode] = React.useState('');
+
+  const [tasks, setTasks] = React.useState([]);
+  const [task, setTask] = React.useState({ title: null, description: null, deadline: null, priority: null, isComplete: false });
 
   const handleConfirm = () => {
-
+    if (dialogMode === 'add') {
+      handleAddTask();
+    } else if (dialogMode === 'edit') {
+      handleUpdateTask();
+    }
   }
 
   const handleAddTask = () => {
+    setTasks([...tasks, task]);
 
+    task.title = null;
+    task.description = null;
+    task.deadline = null;
+    task.priority = null;
+    task.isComplete = false;
+
+    setShowDialog(false);
   };
 
   const handleUpdateTask = () => {
 
+    setShowDialog(false);
   };
 
   const handleCancel = () => {
-    
+
 
     setShowDialog(false);
   };
 
   const handleAddClick = () => {
-
+    setDialogMode('add');
     setShowDialog(true);
   };
 
   const handleUpdateClick = () => {
-
+    setDialogMode('edit');
     setShowDialog(true);
   };
+
+  const EditTaskBody = () => {
+    return (
+      <>
+        <p>Edit Task Body</p>
+      </>
+    );
+  }
 
   return (
     <>
@@ -48,12 +73,17 @@ export default function Home() {
           </Navbar.Brand>
         </Container>
         <Nav className="ml-auto mr-2">
-          <Button variant="primary" style={{ "margin-right": "10px" }} onClick={() => setShowDialog(true)}>
+          <Button variant="primary" style={{ "margin-right": "10px" }} onClick={handleAddClick}>
             <FaPlus className="align-middle" /> Add
           </Button>
         </Nav>
       </Navbar>
-      <TaskDialog show={showDialog} title="Dialog" body={<p>Task Dialog</p>} onConfirm={handleConfirm} onCancel={handleCancel} />
+      <TaskDialog
+        show={showDialog}
+        title={dialogMode === 'add' ? 'Add Task' : 'Edit Task'}
+        body={dialogMode === 'add' ? <AddTaskBody task={task} setTask={setTask}/> : <EditTaskBody />}
+        onConfirm={handleConfirm}
+        onCancel={handleCancel} />
       <Container className="my-3">
         <Table striped bordered hover>
           <thead>
