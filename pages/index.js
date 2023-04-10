@@ -21,47 +21,7 @@ export default function Home() {
   const [showDialog, setShowDialog] = React.useState(false);
   const [dialogMode, setDialogMode] = React.useState('');
 
-  const [preLoadErrors, setPreLoadErrors] = React.useState(false);
-
-  const testTasks = [
-    {
-      title: "Finish project proposal",
-      description: "Write up the proposal and send it to the project manager",
-      deadline: "2023-05-01",
-      priority: "high",
-      isComplete: false
-    },
-    {
-      title: "Buy groceries",
-      description: "Go to the supermarket and buy milk, eggs, bread, and cheese",
-      deadline: "2023-04-15",
-      priority: "med",
-      isComplete: false
-    },
-    {
-      title: "Call doctor's office",
-      description: "Make an appointment for next week",
-      deadline: "2023-04-12",
-      priority: "low",
-      isComplete: false
-    },
-    {
-      title: "Pay rent",
-      description: "Transfer rent money to landlord's bank account",
-      deadline: "2023-04-30",
-      priority: "high",
-      isComplete: false
-    },
-    {
-      title: "Finish book",
-      description: "Read the remaining chapters and write a review",
-      deadline: "2023-05-15",
-      priority: "med",
-      isComplete: false
-    }
-  ];
-
-  const [tasks, setTasks] = React.useState([...testTasks]);
+  const [tasks, setTasks] = React.useState([]);
   const [task, setTask] = React.useState({ title: null, description: null, deadline: null, priority: null, isComplete: false });
 
   const [editIndex, setEditIndex] = React.useState(null);
@@ -75,18 +35,15 @@ export default function Home() {
   }
 
   const handleAddTask = () => {
-    if (task.title && !tasks.map(e => e.title).includes(task.title) && task.description && task.deadline && task.priority) {
+    if (task.title && !existingTitles.includes(task.title) && task.description && task.deadline && task.priority) {
       setTasks([...tasks, task]);
       setTask({ title: null, description: null, deadline: null, priority: null, isComplete: false });
 
       toastr.success('Task added successfully');
 
-      setPreLoadErrors(false);
       setShowDialog(false);
     } else {
       toastr.error('Error adding task');
-
-      setPreLoadErrors(true);
     }
   };
 
@@ -100,19 +57,15 @@ export default function Home() {
 
       toastr.success('Task updated successfully');
 
-      setPreLoadErrors(false);
       setShowDialog(false);
     } else {
       toastr.error('Error updating task');
-
-      setPreLoadErrors(true);
     }
   };
 
   const handleCancel = () => {
     setTask({ title: null, description: null, deadline: null, priority: null, isComplete: false });
     setShowDialog(false);
-    setPreLoadErrors(false);
   };
 
   const handleUpdateClick = (index) => {
@@ -160,12 +113,10 @@ export default function Home() {
             task={task}
             setTask={setTask}
             existingTitles={tasks.map((e) => e.title)}
-            preLoadErrors={preLoadErrors}
           /> :
           <EditTaskBody
             task={task}
             setTask={setTask}
-            preLoadErrors={preLoadErrors}
           />}
         onConfirm={handleConfirm}
         onCancel={handleCancel} />
