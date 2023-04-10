@@ -26,6 +26,8 @@ export default function Home() {
 
   const [editIndex, setEditIndex] = React.useState(null);
 
+  const [preLoadErrors, setPreLoadErrors] = React.useState(false);
+
   const handleConfirm = () => {
     if (dialogMode === 'add') {
       handleAddTask();
@@ -35,13 +37,15 @@ export default function Home() {
   }
 
   const handleAddTask = () => {
-    if (task.title && !existingTitles.includes(task.title) && task.description && task.deadline && task.priority) {
+    if (task.title && !tasks.map(e => e.title) && task.description && task.deadline && task.priority) {
       setTasks([...tasks, task]);
       setTask({ title: null, description: null, deadline: null, priority: null, isComplete: false });
 
       toastr.success('Task added successfully');
 
       setShowDialog(false);
+
+      setPreLoadErrors(true);
     } else {
       toastr.error('Error adding task');
     }
@@ -58,6 +62,8 @@ export default function Home() {
       toastr.success('Task updated successfully');
 
       setShowDialog(false);
+
+      setPreLoadErrors(true);
     } else {
       toastr.error('Error updating task');
     }
@@ -66,6 +72,7 @@ export default function Home() {
   const handleCancel = () => {
     setTask({ title: null, description: null, deadline: null, priority: null, isComplete: false });
     setShowDialog(false);
+    setPreLoadErrors(false);
   };
 
   const handleUpdateClick = (index) => {
@@ -113,10 +120,12 @@ export default function Home() {
             task={task}
             setTask={setTask}
             existingTitles={tasks.map((e) => e.title)}
+            preLoadErrors={preLoadErrors}
           /> :
           <EditTaskBody
             task={task}
             setTask={setTask}
+            preLoadErrors={preLoadErrors}
           />}
         onConfirm={handleConfirm}
         onCancel={handleCancel} />
