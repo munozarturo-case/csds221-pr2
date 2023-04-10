@@ -21,6 +21,8 @@ export default function Home() {
   const [showDialog, setShowDialog] = React.useState(false);
   const [dialogMode, setDialogMode] = React.useState('');
 
+  const [triedSubmit, setTriedSubmit] = React.useState(false);
+
   const testTasks = [
     {
       title: "Finish project proposal",
@@ -70,18 +72,22 @@ export default function Home() {
     } else if (dialogMode === 'edit') {
       handleUpdateTask();
     }
+
+    setTriedSubmit(true);
   }
 
   const handleAddTask = () => {
-    if (task.title && !existingTitles.includes(task.title) && task.description && task.deadline && task.priority) {
+    if (task.title && !tasks.map(e => e.title).includes(task.title) && task.description && task.deadline && task.priority) {
       setTasks([...tasks, task]);
       setTask({ title: null, description: null, deadline: null, priority: null, isComplete: false });
 
       toastr.success('Task added successfully');
 
       setShowDialog(false);
+
+      setTriedSubmit(false);
     } else {
-      toastr.error('Error adding task');
+      toastr.error('Error adding task' + ' triedSubmit: ' + triedSubmit);
     }
   };
 
@@ -96,8 +102,10 @@ export default function Home() {
       toastr.success('Task updated successfully');
 
       setShowDialog(false);
+
+      setTriedSubmit(false);
     } else {
-      toastr.error('Error updating task');
+      toastr.error('Error updating task' + ' triedSubmit: ' + triedSubmit);
     }
   };
 
