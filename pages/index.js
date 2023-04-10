@@ -21,7 +21,7 @@ export default function Home() {
   const [showDialog, setShowDialog] = React.useState(false);
   const [dialogMode, setDialogMode] = React.useState('');
 
-  const [triedSubmit, setTriedSubmit] = React.useState(false);
+  const [preLoadErrors, setPreLoadErrors] = React.useState(false);
 
   const testTasks = [
     {
@@ -72,8 +72,6 @@ export default function Home() {
     } else if (dialogMode === 'edit') {
       handleUpdateTask();
     }
-
-    setTriedSubmit(true);
   }
 
   const handleAddTask = () => {
@@ -83,11 +81,12 @@ export default function Home() {
 
       toastr.success('Task added successfully');
 
+      setPreLoadErrors(false);
       setShowDialog(false);
-
-      setTriedSubmit(false);
     } else {
-      toastr.error('Error adding task' + ' triedSubmit: ' + triedSubmit);
+      toastr.error('Error adding task');
+
+      setPreLoadErrors(true);
     }
   };
 
@@ -101,17 +100,19 @@ export default function Home() {
 
       toastr.success('Task updated successfully');
 
+      setPreLoadErrors(false);
       setShowDialog(false);
-
-      setTriedSubmit(false);
     } else {
-      toastr.error('Error updating task' + ' triedSubmit: ' + triedSubmit);
+      toastr.error('Error updating task');
+
+      setPreLoadErrors(true);
     }
   };
 
   const handleCancel = () => {
     setTask({ title: null, description: null, deadline: null, priority: null, isComplete: false });
     setShowDialog(false);
+    setPreLoadErrors(false);
   };
 
   const handleUpdateClick = (index) => {
@@ -159,10 +160,12 @@ export default function Home() {
             task={task}
             setTask={setTask}
             existingTitles={tasks.map((e) => e.title)}
+            preLoadErrors={preLoadErrors}
           /> :
           <EditTaskBody
             task={task}
             setTask={setTask}
+            preLoadErrors={preLoadErrors}
           />}
         onConfirm={handleConfirm}
         onCancel={handleCancel} />

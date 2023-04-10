@@ -2,10 +2,26 @@ import React from "react";
 
 import { Form } from "react-bootstrap";
 
-export default function EditTaskBody({ task, setTask }) {
+export default function EditTaskBody({ task, setTask, preLoadErrors = false }) {
     const [descriptionError, setDescriptionError] = React.useState('');
     const [deadlineError, setDeadlineError] = React.useState('');
     const [priorityError, setPriorityError] = React.useState('');
+
+    React.useEffect(() => {
+        if (preLoadErrors) {
+            if (!task.description) {
+                setDescriptionError('Description is required');
+            }
+
+            if (!task.deadline) {
+                setDeadlineError('Deadline is required');
+            }
+
+            if (!task.priority) {
+                setPriorityError('Priority is required');
+            }
+        }
+    }, [preLoadErrors, task]);
 
     const handleDescriptionChange = (e) => {
         const description = e.target.value;

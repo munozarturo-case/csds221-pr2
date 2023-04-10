@@ -2,11 +2,33 @@ import React from 'react';
 
 import { Form } from 'react-bootstrap';
 
-export default function AddTaskBody({ task, setTask, existingTitles }) {
+export default function AddTaskBody({ task, setTask, existingTitles, preLoadErrors = false }) {
     const [titleError, setTitleError] = React.useState('');
     const [descriptionError, setDescriptionError] = React.useState('');
     const [deadlineError, setDeadlineError] = React.useState('');
     const [priorityError, setPriorityError] = React.useState('');
+
+    React.useEffect(() => {
+        if (preLoadErrors) {
+            if (!task.title) {
+                setTitleError('Title is required');
+            } else if (existingTitles.includes(task.title)) {
+                setTitleError('Title already exists');
+            }
+
+            if (!task.description) {
+                setDescriptionError('Description is required');
+            }
+
+            if (!task.deadline) {
+                setDeadlineError('Deadline is required');
+            }
+
+            if (!task.priority) {
+                setPriorityError('Priority is required');
+            }
+        }
+    }, [preLoadErrors, task, existingTitles]);
 
     const handleTitleChange = (e) => {
         const title = e.target.value;
