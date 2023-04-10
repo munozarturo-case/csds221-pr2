@@ -96,21 +96,21 @@ export default function AddTaskBody({ task, setTask, existingTitles, preLoadErro
         <Form>
             <Form.Group controlId="formTitle">
                 <Form.Label>Title</Form.Label>
-                <Form.Control type="text" placeholder="Enter title" value={task.title} onChange={handleTitleChange} isInvalid={!!titleError} />
+                <Form.Control type="text" placeholder="Enter title" value={task.title} onChange={handleTitleChange} onBlur={handleTitleChange} isInvalid={!!titleError} />
                 <Form.Control.Feedback type="invalid">
                     {titleError}
                 </Form.Control.Feedback>
             </Form.Group>
             <Form.Group controlId="formDescription">
                 <Form.Label>Description</Form.Label>
-                <Form.Control type="text" placeholder="Enter description" value={task.description} onChange={handleDescriptionChange} isInvalid={!!descriptionError} />
+                <Form.Control type="text" placeholder="Enter description" value={task.description} onChange={handleDescriptionChange} onBlur={handleDescriptionChange} isInvalid={!!descriptionError} />
                 <Form.Control.Feedback type="invalid">
                     {descriptionError}
                 </Form.Control.Feedback>
             </Form.Group>
             <Form.Group controlId="formDeadline">
                 <Form.Label>Deadline</Form.Label>
-                <Form.Control type="date" value={task.deadline} onChange={handleDeadlineChange} isInvalid={!!deadlineError} />
+                <Form.Control type="date" value={task.deadline} onChange={handleDeadlineChange} onBlur={handleDeadlineChange} isInvalid={!!deadlineError} />
                 <Form.Control.Feedback type="invalid">
                     {deadlineError}
                 </Form.Control.Feedback>
@@ -118,9 +118,9 @@ export default function AddTaskBody({ task, setTask, existingTitles, preLoadErro
             <Form.Group controlId="formPriority">
                 <Form.Label>Priority</Form.Label>
                 <div>
-                    <Form.Check inline type="radio" label="High" name="priority" value="high" checked={task.priority === 'high'} onChange={handlePriorityChange} isInvalid={!!priorityError} />
-                    <Form.Check inline type="radio" label="Med" name="priority" value="med" checked={task.priority === 'med'} onChange={handlePriorityChange} isInvalid={!!priorityError} />
-                    <Form.Check inline type="radio" label="Low" name="priority" value="low" checked={task.priority === 'low'} onChange={handlePriorityChange} isInvalid={!!priorityError} />
+                    <Form.Check inline type="radio" label="High" name="priority" value="high" checked={task.priority === 'high'} onChange={handlePriorityChange} onBlur={handlePriorityChange} isInvalid={!!priorityError} />
+                    <Form.Check inline type="radio" label="Med" name="priority" value="med" checked={task.priority === 'med'} onChange={handlePriorityChange} onBlur={handlePriorityChange} isInvalid={!!priorityError} />
+                    <Form.Check inline type="radio" label="Low" name="priority" value="low" checked={task.priority === 'low'} onChange={handlePriorityChange} onBlur={handlePriorityChange} isInvalid={!!priorityError} />
                 </div>
                 <Form.Control.Feedback type="invalid">
                     {priorityError}
