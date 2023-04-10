@@ -37,7 +37,7 @@ export default function Home() {
   }
 
   const handleAddTask = () => {
-    if (task.title && !tasks.map(e => e.title) && task.description && task.deadline && task.priority) {
+    if (task.title && !tasks.map(e => e.title).includes(task.title) && task.description && task.deadline && task.priority) {
       setTasks([...tasks, task]);
       setTask({ title: null, description: null, deadline: null, priority: null, isComplete: false });
 
