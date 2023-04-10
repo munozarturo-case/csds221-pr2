@@ -45,9 +45,10 @@ export default function Home() {
 
       setShowDialog(false);
 
-      setPreLoadErrors(true);
     } else {
       toastr.error('Error adding task');
+
+      setPreLoadErrors(true);
     }
   };
 
@@ -63,9 +64,10 @@ export default function Home() {
 
       setShowDialog(false);
 
-      setPreLoadErrors(true);
     } else {
       toastr.error('Error updating task');
+
+      setPreLoadErrors(true);
     }
   };
 
